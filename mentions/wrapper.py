@@ -1,47 +1,44 @@
 import re
-import logging
 
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
-
-from actstream import action
-
-
-logger = logging.getLogger('users')
+from .conf import settings
 
 
 class MentionsWrapper:
-    pattern = r'class="mention" data-profile=[\'"]?([^\'" >]+)'
-    text = None
-    user_from = None
     instance = None
+    user_from = None
+    text = None
+    callback = None
 
     def __init__(self, *args, **kwargs):
-        self.text = kwargs.pop('text')
-        self.user_from = kwargs.pop('user_from')
         self.instance = kwargs.pop('instance')
+        self.user_from = kwargs.pop('user_from')
+        self.text = kwargs.pop('text')
+        self.callback = kwargs.pop('callback')
 
-    def get_mentions_profiles(self):
-        return re.findall(self.pattern, self.text)
+    def get_pattern(self):
+        try:
+            return settings.MENTIONS.get('pattern', settings.MENTIONS_PATTERN)
+        except AttributeError:
+            return settings.MENTIONS_PATTERN
+
+    def get_mentions_array(self):
+        return re.findall(self.get_pattern(), self.text)
 
     def detect_mentions(self):
-        profiles_list_pk = self.get_mentions_profiles()
+        mentions_array = self.get_mentions_array()
 
-        if len(profiles_list_pk):
-            for profile_pk in profiles_list_pk:
-                try:
-                    user_to = get_user_model().objects.get(pk=profile_pk)
-                    self.do_mention(
-                        user_from=self.user_from,
-                        user_to=user_to,
-                        target=self.instance)
-                except ObjectDoesNotExist:
-                    logger.warning('{} can not be mentioned by {}'.format(profile_pk, self.user_from))
+        if len(mentions_array):
+            for object_pk in mentions_array:
+                self.do_mention(
+                    user_from=self.user_from,
+                    object_pk=object_pk,
+                    target=self.instance)
 
-    def do_mention(self, user_from, user_to, target=None):
-        action.send(
-            user_from,
-            action_object=user_to,
-            target=target,
-            verb=settings.MENTIONS_VERB)
+        return mentions_array
+
+    def do_mention(self, user_from, object_pk, target=None):
+        self.callback(
+            sender=self.instance.__class__,
+            user_from=user_from,
+            object_pk=object_pk,
+            target=target)
