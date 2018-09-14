@@ -7,6 +7,8 @@ REGISTRY = {}
 
 
 def add_to_registry(model, field, callback, pattern):
+    pattern = settings.MENTIONS_DEFAULT_PATTERN if pattern is None else pattern
+
     REGISTRY[model] = {
         'field': field,
         'callback': callback,
@@ -19,6 +21,5 @@ def connect_signals(model):
 
 
 def register(model, field, callback, pattern=None):
-    pattern = settings.MENTIONS_DEFAULT_PATTERN if pattern is None else pattern
     add_to_registry(model, field, callback, pattern)
     connect_signals(model)
