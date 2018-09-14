@@ -8,12 +8,14 @@ def post_save_model_detect_mentions(sender, instance, created, *args, **kwargs):
         try:
             field = REGISTRY[instance.__class__].get('field')
             callback = REGISTRY[instance.__class__].get('callback')
+            pattern = REGISTRY[instance.__class__].get('pattern')
 
             MentionsWrapper(
                 instance=instance,
                 user_from=instance.created_by,
                 text=getattr(instance, field),
-                callback=callback).detect_mentions()
+                callback=callback,
+                pattern=pattern).detect_mentions()
 
         except KeyError:
             pass

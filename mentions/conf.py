@@ -10,5 +10,4 @@ logger = logging.getLogger(__name__)
 
 
 class MentionsConfig(AppConf):
-    VERB = 'mention'
-    PATTERN = r'class="mention" data-profile=[\'"]?([^\'" >]+)'
+    DEFAULT_PATTERN = r'class="mention" data-user=[\'"]?([^\'" >]+)'

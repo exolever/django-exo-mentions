@@ -1,7 +1,5 @@
 import re
 
-from .conf import settings
-
 
 class MentionsWrapper:
     instance = None
@@ -14,15 +12,10 @@ class MentionsWrapper:
         self.user_from = kwargs.pop('user_from')
         self.text = kwargs.pop('text')
         self.callback = kwargs.pop('callback')
-
-    def get_pattern(self):
-        try:
-            return settings.MENTIONS.get('pattern', settings.MENTIONS_PATTERN)
-        except AttributeError:
-            return settings.MENTIONS_PATTERN
+        self.pattern = kwargs.pop('pattern')
 
     def get_mentions_array(self):
-        return re.findall(self.get_pattern(), self.text)
+        return re.findall(self.pattern, self.text)
 
     def detect_mentions(self):
         mentions_array = self.get_mentions_array()
