@@ -11,13 +11,7 @@ Tests for `django-mentions` models module.
 from django.test import TestCase
 
 
-class TestMentionsModels(TestCase):
+class TestMentions(TestCase):
 
     def setUp(self):
-        pass
-
-    def test_something(self):
-        pass
-
-    def tearDown(self):
         pass

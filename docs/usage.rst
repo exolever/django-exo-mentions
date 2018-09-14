@@ -8,19 +8,14 @@ To use django-mentions in a project, add it to your `INSTALLED_APPS`:
 
     INSTALLED_APPS = (
         ...
-        'mentions.apps.MentionsConfig',
+        'mentions',
         ...
     )
 
-Add django-mentions's URL patterns:
+Register the models in which you want to detect mentions
 
 .. code-block:: python
 
-    from mentions import urls as mentions_urls
+    from mentions.registry import register
 
-
-    urlpatterns = [
-        ...
-        url(r'^', include(mentions_urls)),
-        ...
-    ]
+    register(model, field, callback, pattern)

@@ -11,8 +11,6 @@ django-mentions
 .. image:: https://codecov.io/gh/marfyl/django-mentions/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/marfyl/django-mentions
 
-Hello Project
-
 Documentation
 -------------
 
@@ -31,27 +29,9 @@ Add it to your `INSTALLED_APPS`:
 
     INSTALLED_APPS = (
         ...
-        'mentions.apps.MentionsConfig',
+        'mentions',
         ...
     )
-
-Add django-mentions's URL patterns:
-
-.. code-block:: python
-
-    from mentions import urls as mentions_urls
-
-
-    urlpatterns = [
-        ...
-        url(r'^', include(mentions_urls)),
-        ...
-    ]
-
-Features
---------
-
-* TODO
 
 Running Tests
 -------------
@@ -63,14 +43,3 @@ Does the code actually work?
     source <YOURVIRTUALENV>/bin/activate
     (myenv) $ pip install tox
     (myenv) $ tox
-
-Credits
--------
-
-Tools used in rendering this package:
-
-*  Cookiecutter_
-*  `cookiecutter-djangopackage`_
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`cookiecutter-djangopackage`: https://github.com/pydanny/cookiecutter-djangopackage
