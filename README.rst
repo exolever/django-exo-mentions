@@ -15,9 +15,9 @@ django-mentions
 Documentation
 -------------
 
-The purpose of this package is to handle in some way mentions to users in a text field of a model, given a and a field of the model that we want to listen.
+The purpose of this package is to handle in some way mentions to users in a text field of a model. You can choose the model you want, the field you want to listen to mentions, the pattern you use to codify the mention and the callback to notify to your app.
 
-The package will notify each time there is a mention in this field of the model to a callback that you can define. Then you can act accordingly on your application requisites.
+The package will notify to callback function each time there is a mention in this field of the model. Then you can act accordingly on your application requisites.
 
 The full documentation is at https://django-mentions.readthedocs.io.
 
@@ -62,7 +62,7 @@ Define a signal for the callback
         # Your code here
 
 Register a model and field in which you want to detect mentions.
-You can override the pattern you want to use.
+You can override the pattern if you want.
 
 .. code-block:: python
 
@@ -76,9 +76,8 @@ You can override the pattern you want to use.
             model = Post
             field = 'description'
             callback = post_detect_mention_callback
-            pattern = r'class="mention" data-user=[\'"]?([^\'" >]+)'
 
-            register(model, field, callback, pattern)    
+            register(model, field, callback)    
 
 At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
 

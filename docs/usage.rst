@@ -32,7 +32,7 @@ Define a signal for the callback
         # Your code here
 
 Register a model and field in which you want to detect mentions.
-You can override the pattern you want to use.
+You can override the pattern if you want.
 
 .. code-block:: python
 
@@ -46,9 +46,8 @@ You can override the pattern you want to use.
             model = Post
             field = 'description'
             callback = post_detect_mention_callback
-            pattern = r'class="mention" data-user=[\'"]?([^\'" >]+)'
 
-            register(model, field, callback, pattern)    
+            register(model, field, callback)    
 
 At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
 
