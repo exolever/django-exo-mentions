@@ -11,8 +11,13 @@ django-mentions
 .. image:: https://codecov.io/gh/marfyl/django-mentions/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/marfyl/django-mentions
 
+
 Documentation
 -------------
+
+The purpose of this package is to handle in some way mentions to users in a text field of a model, given a and a field of the model that we want to listen.
+
+The package will notify each time there is a mention in this field of the model to a callback that you can define. Then you can act accordingly on your application requisites.
 
 The full documentation is at https://django-mentions.readthedocs.io.
 
@@ -23,7 +28,11 @@ Install django-mentions::
 
     pip install django-mentions
 
-Add it to your `INSTALLED_APPS`:
+=====
+Usage
+=====
+
+To use django-mentions in a project, add it to your `INSTALLED_APPS`:
 
 .. code-block:: python
 
@@ -32,6 +41,66 @@ Add it to your `INSTALLED_APPS`:
         'mentions',
         ...
     )
+
+Define a signal for the callback
+
+.. code-block:: python
+    
+    from django.dispatch import receiver
+
+    @receiver(request_finished)
+    def post_detect_mention_callback(sender, **kwargs):
+        """ You will receive information of the mention
+        user_from: kwargs.get('user_from')
+            User that mentions
+        object_pk: kwargs.get('object_pk')
+            User's Pk that has been mentioned
+        target: kwargs.get('target')
+            The object where the mention was made
+        """
+
+        # Your code here
+
+Register a model and field in which you want to detect mentions.
+You can override the pattern you want to use.
+
+.. code-block:: python
+
+    from django.apps import AppConfig
+    from mentions.registry import register
+
+    class MyAppConfig(AppConfig):
+        name = 'myapp'
+
+        def ready(self):
+            model = Post
+            field = 'description'
+            callback = post_detect_mention_callback
+            pattern = r'class="mention" data-user=[\'"]?([^\'" >]+)'
+
+            register(model, field, callback, pattern)    
+
+At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
+
+.. code-block:: python
+
+    def register(model, field, callback, pattern):
+    """
+    This method handles the mentions about the model in the field and notify to the callback when there is any mention
+
+    Parameters
+    ----------
+    model : Models
+        The model to register for detect mentions
+    field : str
+        Field of the model to detect mentions
+    callback : function
+        Callback function to notify when there are mentions
+    pattern : regular expression
+        The pattern to codify the mentions (default r'class="mention" data-user=[\'"]?([^\'" >]+)')
+
+    """
+
 
 Running Tests
 -------------
