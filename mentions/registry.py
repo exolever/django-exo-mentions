@@ -1,13 +1,16 @@
 from django.db.models.signals import post_save
 
 from .signals.views import post_save_model_detect_mentions
-from .conf import settings
 
 REGISTRY = {}
 
 
+def get_default_pattern():
+    return r'class="mention" data-user=[\'"]?([^\'" >]+)'
+
+
 def add_to_registry(model, field, callback, pattern):
-    pattern = settings.MENTIONS_DEFAULT_PATTERN if pattern is None else pattern
+    pattern = get_default_pattern() if pattern is None else pattern
 
     REGISTRY[model] = {
         'field': field,

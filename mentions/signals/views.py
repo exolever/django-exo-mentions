@@ -12,7 +12,7 @@ def post_save_model_detect_mentions(sender, instance, created, *args, **kwargs):
 
             MentionsWrapper(
                 instance=instance,
-                user_from=instance.created_by,
+                user_from=None,  # instance.created_by,
                 text=getattr(instance, field),
                 callback=callback,
                 pattern=pattern).detect_mentions()
