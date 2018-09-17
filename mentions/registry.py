@@ -1,6 +1,6 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 
-from .signals.views import post_save_model_detect_mentions
+from .signals.views import post_save_model_detect_mentions, pre_save_model_detect_mentions
 
 REGISTRY = {}
 
@@ -21,6 +21,7 @@ def add_to_registry(model, field, callback, pattern):
 
 def connect_signals(model):
     post_save.connect(post_save_model_detect_mentions, sender=model)
+    pre_save.connect(pre_save_model_detect_mentions, sender=model)
 
 
 def register(model, field, callback, pattern=None):
