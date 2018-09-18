@@ -1,0 +1,2 @@
+class UserMentionedObjectDoesNotExist(Exception):
+    pass
