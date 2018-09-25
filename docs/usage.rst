@@ -8,19 +8,65 @@ To use django-mentions in a project, add it to your `INSTALLED_APPS`:
 
     INSTALLED_APPS = (
         ...
-        'mentions.apps.MentionsConfig',
+        'mentions',
         ...
     )
 
-Add django-mentions's URL patterns:
+Define a signal for the callback
+
+.. code-block:: python
+    
+    from django.dispatch import receiver
+    from django.core.signals import request_finished
+
+    @receiver(request_finished)
+    def post_detect_mention_callback(sender, **kwargs):
+        """ You will receive information of the mention
+        user_from: kwargs.get('user_from')
+            User that mentions
+        object_pk: kwargs.get('object_pk')
+            User's Pk that has been mentioned
+        target: kwargs.get('target')
+            The object where the mention was made
+        """
+
+        # Your code here
+
+Register a model and field in which you want to detect mentions.
+You can override the pattern if you want.
 
 .. code-block:: python
 
-    from mentions import urls as mentions_urls
+    from django.apps import AppConfig
+    from mentions.registry import register
 
+    class MyAppConfig(AppConfig):
+        name = 'myapp'
 
-    urlpatterns = [
-        ...
-        url(r'^', include(mentions_urls)),
-        ...
-    ]
+        def ready(self):
+            model = Post
+            field = 'description'
+            callback = post_detect_mention_callback
+
+            register(model, field, callback)    
+
+At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
+
+.. code-block:: python
+
+    def register(model, field, callback, pattern):
+    """
+    This method handles the mentions about the model in the field and notify to the callback when there is any mention
+
+    Parameters
+    ----------
+    model : Models
+        The model to register for detect mentions
+    field : str
+        Field of the model to detect mentions
+    callback : function
+        Callback function to notify when there are mentions
+    pattern : regular expression
+        The pattern to codify the mentions (default r'class="mention" data-user=[\'"]?([^\'" >]+)')
+
+    """

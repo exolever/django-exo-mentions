@@ -16,13 +16,14 @@ DATABASES = {
     }
 }
 
-ROOT_URLCONF = "tests.urls"
+ROOT_URLCONF = "mentions.urls"
 
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sites",
     "mentions",
+    "tests"
 ]
 
 SITE_ID = 1
