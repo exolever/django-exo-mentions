@@ -2,14 +2,14 @@
 django-mentions
 =============================
 
-.. image:: https://badge.fury.io/py/django-mentions.svg
-    :target: https://badge.fury.io/py/django-mentions
+.. image:: https://badge.fury.io/py/django-model-mentions.svg
+    :target: https://badge.fury.io/py/django-model-mentions
 
-.. image:: https://travis-ci.org/marfyl/django-mentions.svg?branch=master
-    :target: https://travis-ci.org/marfyl/django-mentions
+.. image:: https://travis-ci.org/exolever/django-mentions.svg?branch=master
+    :target: https://travis-ci.org/exolever/django-mentions
 
-.. image:: https://codecov.io/gh/marfyl/django-mentions/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/marfyl/django-mentions
+.. image:: https://codecov.io/gh/exolever/django-mentions/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/exolever/django-mentions
 
 
 Documentation
@@ -19,7 +19,7 @@ The purpose of this package is to handle in some way mentions to users in a text
 
 The package will notify to callback function each time there is a mention in this field of the model. Then you can act accordingly on your application requisites.
 
-The full documentation is at https://django-mentions.readthedocs.io.
+The full documentation is at https://django-model-mentions.readthedocs.io.
 
 Quickstart
 ----------
