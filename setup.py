@@ -47,11 +47,11 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 setup(
     name='django-model-mentions',
     version=version,
-    description="""Hello Project""",
+    description="""Manage mentions in django models""",
     long_description=readme + '\n\n' + history,
     author='Jose M. Marfil',
     author_email='josemarfyl@gmail.com',
-    url='https://github.com/marfyl/django-mentions',
+    url='https://github.com/exolever/django-mentions',
     packages=[
         'mentions',
     ],
