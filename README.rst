@@ -24,9 +24,9 @@ The full documentation is at https://django-model-mentions.readthedocs.io.
 Quickstart
 ----------
 
-Install django-mentions::
+Install django-model-mentions::
 
-    pip install django-mentions
+    pip install django-model-mentions
 
 =====
 Usage
