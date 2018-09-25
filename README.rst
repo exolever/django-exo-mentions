@@ -1,5 +1,5 @@
 =============================
-django-mentions
+django-model-mentions
 =============================
 
 .. image:: https://badge.fury.io/py/django-model-mentions.svg

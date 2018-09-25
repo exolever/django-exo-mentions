@@ -193,7 +193,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'django-mentions.tex', u'django-mentions Documentation',
+    ('index', 'django-model-mentions.tex', u'django-model-mentions Documentation',
      u'Jose M. Marfil', 'manual'),
 ]
 
@@ -223,7 +223,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'django-mentions', u'django-mentions Documentation',
+    ('index', 'django-model-mentions', u'django-model-mentions Documentation',
      [u'Jose M. Marfil'], 1)
 ]
 
@@ -237,8 +237,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'django-mentions', u'django-mentions Documentation',
-     u'Jose M. Marfil', 'django-mentions', 'One line description of project.',
+    ('index', 'django-model-mentions', u'django-model-mentions Documentation',
+     u'Jose M. Marfil', 'django-model-mentions', 'One line description of project.',
      'Miscellaneous'),
 ]
 
