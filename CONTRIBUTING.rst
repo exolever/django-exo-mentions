@@ -13,7 +13,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/marfyl/django-mentions/issues.
+Report bugs at https://github.com/exolever/django-mentions/issues.
 
 If you are reporting a bug, please include:
 
@@ -36,8 +36,8 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-django-mentions could always use more documentation, whether as part of the 
-official django-mentions docs, in docstrings, or even on the web in blog posts,
+django-model-mentions could always use more documentation, whether as part of the 
+official django-model-mentions docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
@@ -55,7 +55,7 @@ If you are proposing a feature:
 Get Started!
 ------------
 
-Ready to contribute? Here's how to set up `django-mentions` for local development.
+Ready to contribute? Here's how to set up `django-model-mentions` for local development.
 
 1. Fork the `django-mentions` repo on GitHub.
 2. Clone your fork locally::

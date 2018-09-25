@@ -1,4 +1,4 @@
-* django-mentions version:
+* django-model-mentions version:
 * Django version:
 * Python version:
 * Operating System:
