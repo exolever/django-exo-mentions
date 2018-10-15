@@ -24,7 +24,6 @@ flake8-print
 flake8-todo
 flake8-debugger
 flake8-quotes
-pep8
 pylint
 pylint-django
 autopep8
