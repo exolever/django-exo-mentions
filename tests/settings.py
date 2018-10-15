@@ -12,12 +12,7 @@ SECRET_KEY = "8bhf=t3yt!9q!lf&7zpdd85)ffjudj5em_^c&u^6o0+0oodf_t"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'mentions',  # Or path to database file if using sqlite3.
-        # 'USER': 'postgres',  # Not used with sqlite3.
-        # 'PASSWORD': 'su82jr',  # Not used with sqlite3.
-        # 'HOST': 'localhost',  # Not used with sqlite3.
-        # 'PORT': '5434'
+        'NAME': 'mentions',  # Or path to database file if using sqlite3.
     }
 }
 
@@ -28,7 +23,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.sites",
-    # Testing
+    "rest_framework",
+    # Apps for Testing
     "model_mommy",
     "tests",
     # Main app
@@ -37,7 +33,13 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+_MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+)
+
 if django.VERSION >= (1, 10):
-    MIDDLEWARE = ()
+    MIDDLEWARE = _MIDDLEWARE_CLASSES
 else:
-    MIDDLEWARE_CLASSES = ()
+    MIDDLEWARE_CLASSES = _MIDDLEWARE_CLASSES

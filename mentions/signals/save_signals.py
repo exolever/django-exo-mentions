@@ -16,7 +16,7 @@ def _construct_wrapper(instance):
 
         wrapper = MentionsWrapper(
             instance=instance,
-            user_from=instance.created_by,
+            user_from=getattr(instance, 'created_by', None),
             text=getattr(instance, field),
             original_text=getattr(original_instance, field, None),
             callback=callback,
