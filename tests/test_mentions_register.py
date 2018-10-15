@@ -28,7 +28,6 @@ class TestMentionsRegister(DjangoMentionTestMixins, TestCase):
 
     def test_model_registration_signals_are_connected_after_register(self):
         # DO ACTION
-        # import ipdb; ipdb.set_trace()
         register(ModelWithCustomDescriptor, 'text', post_detect_mention_test_callback)
 
         # ASSERTS

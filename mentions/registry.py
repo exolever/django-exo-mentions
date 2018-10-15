@@ -64,7 +64,7 @@ def get_model_registered_from_name(nodel_name, raise_exceptions=True):
     except KeyError:
         if raise_exceptions:
             raise DjangoMentionException(
-                "Model {} not registered".format(nodel_name))
+                'Model {} not registered'.format(nodel_name))
 
     return registered_model
 

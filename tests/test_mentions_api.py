@@ -1,10 +1,18 @@
-from django.conf import settings
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+test_django-mentions
+------------
+
+Tests for `django-mentions` models module.
+"""
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from faker import Faker
 from model_mommy import mommy
-from model_mommy.recipe import Recipe, foreign_key
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -22,10 +30,9 @@ class TestAPIMentions(APITestCase):
             email=user_email)
         self.user.set_password(user_pass)
         self.user.save()
-        logged = self.client.login(
+        self.client.login(
             username=self.user.username,
             password=user_pass)
-        self.assertTrue(logged)
 
     def test_search_user_api_find_matchs(self):
         # PREPARE DATA
