@@ -12,10 +12,20 @@ To use django-mentions in a project, add it to your `INSTALLED_APPS`:
         ...
     )
 
+Add this url to your api urls:
+
+.. code-block:: python
+    urlpatterns = [
+        ...
+        url(r'^mentions', include('mentions.api.urls', namespace='mentions')),
+        ...
+    ]
+
+
 Define a signal for the callback
 
 .. code-block:: python
-    
+
     from django.dispatch import receiver
     from django.core.signals import request_finished
 
@@ -32,7 +42,7 @@ Define a signal for the callback
 
         # Your code here
 
-Register a model and field in which you want to detect mentions.
+Register a model and field in which you want to detect mentions. If you want to get trace about who is the user that has made the mention, ensure the model registered define a property or a model field called created_by.
 You can override the pattern if you want.
 
 .. code-block:: python
@@ -48,7 +58,7 @@ You can override the pattern if you want.
             field = 'description'
             callback = post_detect_mention_callback
 
-            register(model, field, callback)    
+            register(model, field, callback)
 
 At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
 

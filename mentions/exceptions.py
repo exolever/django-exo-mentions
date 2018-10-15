@@ -1,2 +1,6 @@
-class UserMentionedObjectDoesNotExist(Exception):
+class DjangoMentionException(Exception):
+    pass
+
+
+class MentionedObjectDoesNotExist(Exception):
     pass

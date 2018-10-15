@@ -45,7 +45,7 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-model-mentions',
+    name='django-mentions',
     version=version,
     description="""Hello Project""",
     long_description=readme + '\n\n' + history,
@@ -56,7 +56,9 @@ setup(
         'mentions',
     ],
     include_package_data=True,
-    install_requires=[],
+    install_requires=[
+        'djangorestframework==3.6.3',
+    ],
     license="MIT",
     zip_safe=False,
     keywords='django-model-mentions',
