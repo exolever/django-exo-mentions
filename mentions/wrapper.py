@@ -37,12 +37,11 @@ class MentionsWrapper:
         deleted_mentions = original_mentions_array - mentions_array     # noqa
         new_mentions = mentions_array - original_mentions_array
 
-        if len(new_mentions):
-            for object_pk in new_mentions:
-                self.do_mention(
-                    user_from=self.user_from,
-                    object_pk=int(object_pk),
-                    target=self.instance)
+        for object_pk in new_mentions:
+            self.do_mention(
+                user_from=self.user_from,
+                object_pk=int(object_pk),
+                target=self.instance)
 
     def do_mention(self, user_from, object_pk, target=None):
         self.callback(

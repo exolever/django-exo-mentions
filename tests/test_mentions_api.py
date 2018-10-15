@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+test_django-mentions
+------------
+
+Tests for `django-mentions` models module.
+"""
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
