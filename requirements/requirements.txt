@@ -1,0 +1,5 @@
+--index-url https://pypi.python.org/simple/
+--process-dependency-links
+
+# This param indicates to check dependencies at setup.py
+-e .

@@ -45,7 +45,7 @@ To use django-mentions in a project, add it to your `INSTALLED_APPS`:
 Define a signal for the callback
 
 .. code-block:: python
-    
+
     from django.dispatch import receiver
     from django.core.signals import request_finished
 
@@ -78,7 +78,7 @@ You can override the pattern if you want.
             field = 'description'
             callback = post_detect_mention_callback
 
-            register(model, field, callback)    
+            register(model, field, callback)
 
 At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
 
@@ -107,8 +107,9 @@ Running Tests
 
 Does the code actually work?
 
-::
+Docker, Compose, and Tox are used to approximate the environment that Travis CI, Code Climate, and Coveralls all run when you push. This will allow you to test your code against multiple versions of Python (3.4, 3.5, 3.6, 3.7) locally before pushing it or even committing it. For more information about how to get Docker, please visit `documentation
+https://docs.docker.com/install/linux/docker-ce/ubuntu/`_.
 
-    source <YOURVIRTUALENV>/bin/activate
-    (myenv) $ pip install tox
-    (myenv) $ tox
+To run everything (this will take a while the first time you run it, but subsequent runs will be quick):
+
+$ docker build -t django-mentions/tox:latest .
