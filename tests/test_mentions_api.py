@@ -40,13 +40,15 @@ class TestAPIMentions(APITestCase):
          for _ in range(5)]
         url = reverse('api:mentions:search')
         last_user = get_user_model().objects.last()
-        post_data = {'search': last_user.email}
+        post_data = {'search': last_user.first_name}
 
         # DO ACTIONS
         response = self.client.post(url, data=post_data, format='json')
 
         # ASSERTS
         self.assertTrue(status.is_success(response.status_code))
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0].get('name'), last_user.first_name)
 
     def test_search_user_api_raise_error(self):
         # PREPARE DATA

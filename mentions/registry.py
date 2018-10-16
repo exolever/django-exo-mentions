@@ -1,4 +1,5 @@
 from django.db.models.signals import post_save, pre_save
+from django.conf import settings
 
 from .exceptions import DjangoMentionException
 from .signals.save_signals import (
@@ -7,18 +8,19 @@ from .signals.save_signals import (
 )
 
 REGISTRY = {}
+DEFAULT_PATTERN = r'(data-mentiontype=(?:[\'|\"][a-zA-Z]*(?:\'|\"))) (data-mentionuuid=(?:[\'|\"][a-zA-Z0-9]*(?:\'|\")))'  # noqa
 
 
 def get_default_pattern():
-    return r'class="mention" data-user=[\'"]?([^\'" >]+)'
+    return getattr(settings, 'MENTIONS_PATTERN', DEFAULT_PATTERN)
 
 
 def _get_key_from_model(model):
-    return model.__class__.__name__
+    return model.__name__
 
 
 def _add_to_registry(model, field, callback, pattern):
-    pattern = get_default_pattern() if pattern is None else pattern
+    pattern = pattern or get_default_pattern()
     model_key = _get_key_from_model(model)
 
     try:

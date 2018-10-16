@@ -30,7 +30,7 @@ class SearchMentionAPIView(GenericAPIView):
 
         if serializer.is_valid():
             users = get_user_model().objects.filter(
-                email__icontains=serializer.data.get('search')
+                first_name__icontains=serializer.data.get('search')
             )
             results = [
                 {'type_object': 'user',

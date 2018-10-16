@@ -5,7 +5,9 @@ class MentionsWrapper:
     instance = None
     user_from = None
     text = None
+    original_text = None
     callback = None
+    pattern = None
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance')
@@ -15,33 +17,50 @@ class MentionsWrapper:
         self.callback = kwargs.pop('callback')
         self.pattern = kwargs.pop('pattern')
 
-    def get_mentions_array(self, text):
-        return re.findall(self.pattern, text)
+    def get_mentions(self, text):
+        """
+        Mentions items from regex findall have this structure -(order matters):
+            [('data-mentiontype="User"', 'data-mentionuuid="1"'), ...]
+        """
+        mentions = {}
+        for mention in re.findall(self.pattern, text):
+            mention_type = mention[0].split('=')[1][1:-1]
+            mention_uuid = mention[1].split('=')[1][1:-1]
+            try:
+                mentions[mention_type]
+            except KeyError:
+                mentions[mention_type] = []
+
+            mentions[mention_type].append(mention_uuid)
+
+        return mentions
 
     def detect_mentions(self):
-        mentions_array = set(self.get_mentions_array(self.text))
+        mentions = self.get_mentions(self.text)
 
-        if len(mentions_array):
-            for object_pk in mentions_array:
+        for mention_type in mentions.keys():
+            for mention_pk in set(mentions.get(mention_type)):
                 self.do_mention(
                     user_from=self.user_from,
-                    object_pk=int(object_pk),
+                    object_pk=int(mention_pk),
                     target=self.instance)
 
-        return mentions_array
-
     def update_mentions(self):
-        original_mentions_array = set(self.get_mentions_array(self.original_text))
-        mentions_array = set(self.get_mentions_array(self.text))
+        original_mentions = self.get_mentions(self.original_text)
+        mentions = self.get_mentions(self.text)
 
-        deleted_mentions = original_mentions_array - mentions_array     # noqa
-        new_mentions = mentions_array - original_mentions_array
+        deleted_mentions = {}
+        new_mentions = {}
+        for key in list(original_mentions.keys()) + list(mentions.keys()):
+            deleted_mentions = set(original_mentions.get(key)) - set(mentions.get(key))  # noqa
+            new_mentions[key] = set(mentions.get(key)) - set(original_mentions.get(key))
 
-        for object_pk in new_mentions:
-            self.do_mention(
-                user_from=self.user_from,
-                object_pk=int(object_pk),
-                target=self.instance)
+        for mention_type in new_mentions.keys():
+            for mention_pk in new_mentions.get(mention_type):
+                self.do_mention(
+                    user_from=self.user_from,
+                    object_pk=int(mention_pk),
+                    target=self.instance)
 
     def do_mention(self, user_from, object_pk, target=None):
         self.callback(

@@ -38,13 +38,28 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
     @patch('mentions.wrapper.MentionsWrapper.do_mention')
     def test_model_registration_with_multiple_mentions(self, do_mentions_patch):
         # PREPARE DATA
-        user_mentioned_1 = get_user_model().objects.create(username='1')
-        user_mentioned_2 = get_user_model().objects.create(username='2')
-        description = 'Hi <a class="mention" data-user="{}", '\
-            'href="/ecosystem/profile/{}/">@{}</a> and , '\
-            '<a class="mention" data-user="{}" href="/ecosystem/profile/{}/">@{}</a>'.format(
-                user_mentioned_1.pk, user_mentioned_1.pk, user_mentioned_1.first_name,
-                user_mentioned_2.pk, user_mentioned_2.pk, user_mentioned_2.first_name)
+        user_mentioned_1 = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
+        user_mentioned_2 = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
+        user_1_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+            user_mentioned_1.__class__.__name__, user_mentioned_1.pk)
+        user_2_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+            user_mentioned_2.__class__.__name__, user_mentioned_2.pk)
+        description = '<p>{} \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            </p>'.format(
+            fake.text(),
+            user_1_html_pattern, user_mentioned_1.first_name,
+            user_2_html_pattern, user_mentioned_2.first_name,
+        )
 
         # DO ACTION
         self.instance = ModelWithCustomDescriptor.objects.create(text=description)
@@ -56,7 +71,11 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
     @patch('mentions.wrapper.MentionsWrapper.do_mention')
     def test_model_registration_with_no_mentions(self, do_mentions_patch):
         # PREPARE DATA
-        user_mentioned = get_user_model().objects.create(username='1')
+        user_mentioned = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         description = 'Hello Post'.format(
             user_mentioned.pk, user_mentioned.pk, user_mentioned.first_name)
 
@@ -76,10 +95,18 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
             email=fake.email(),
             first_name=fake.name(),
         )
-        description = ' \
-            <a class="mention" data-user="{}">@{}</a> \
-            <a class="mention" data-user="{}">@{}</a> \
-            '.format(user.pk, user.first_name, user.pk, user.first_name)
+        user_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+            user.__class__.__name__, user.pk)
+        description = '<p>{} \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            {} \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            </p>'.format(
+            fake.text(),
+            user_html_pattern, user.first_name,
+            fake.text(),
+            user_html_pattern, user.first_name,
+        )
 
         # DO ACTION
         ModelWithCustomDescriptor.objects.create(text=description)
@@ -95,12 +122,17 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
             email=fake.email(),
             first_name=fake.name())
             for _ in range(3)]
-        description = ' \
-            <a class="mention" data-user="{}">@{}</a> \
-            <a class="mention" data-user="{}">@{}</a> \
-            '.format(
-            user_1.pk, user_2.first_name,
-            user_2.pk, user_2.first_name,
+        user_1_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+            user_1.__class__.__name__, user_1.pk)
+        user_2_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+            user_2.__class__.__name__, user_2.pk)
+        description = '<p>{} \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+            </p>'.format(
+            fake.text(),
+            user_1_html_pattern, user_1.first_name,
+            user_2_html_pattern, user_2.first_name,
         )
 
         mention_object = ModelWithCustomDescriptor.objects.create(
@@ -108,12 +140,15 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
 
         # DO ACTION
         with patch('mentions.wrapper.MentionsWrapper.do_mention') as do_mentions_patch:
-            description = ' \
-                <a class="mention" data-user="{}">@{}</a> \
-                <a class="mention" data-user="{}">@{}</a> \
-                '.format(
-                user_2.pk, user_2.first_name,
-                user_3.pk, user_3.first_name,
+            user_3_html_pattern = self.DEFAULT_HTML_PATTERN.format(
+                user_3.__class__.__name__, user_3.pk)
+            description = '<p>{} \
+                <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+                <a class="class1 class2" {} href="/ecosystem/profile">@{}</a> \
+                </p>'.format(
+                fake.text(),
+                user_2_html_pattern, user_2.first_name,
+                user_3_html_pattern, user_3.first_name,
             )
             mention_object.text = description
             mention_object.save()
