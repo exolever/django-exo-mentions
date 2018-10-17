@@ -1,15 +1,15 @@
 =============================
-django-mentions
+django-exo-mentions
 =============================
 
-.. image:: https://badge.fury.io/py/django-model-mentions.svg
-    :target: https://badge.fury.io/py/django-model-mentions
+.. image:: https://badge.fury.io/py/django-exo-mentions.svg
+    :target: https://badge.fury.io/py/django-exo-mentions
 
-.. image:: https://travis-ci.org/exolever/django-mentions.svg?branch=master
-    :target: https://travis-ci.org/exolever/django-mentions
+.. image:: https://travis-ci.org/exolever/django-exo-mentions.svg?branch=master
+    :target: https://travis-ci.org/exolever/django-exo-mentions
 
-.. image:: https://codecov.io/gh/exolever/django-mentions/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/exolever/django-mentions
+.. image:: https://codecov.io/gh/exolever/django-exo-mentions/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/exolever/django-exo-mentions
 
 
 Documentation
@@ -19,33 +19,33 @@ The purpose of this package is to handle in some way mentions to users in a text
 
 The package will notify to callback function each time there is a mention in this field of the model. Then you can act accordingly on your application requisites.
 
-The full documentation is at https://django-model-mentions.readthedocs.io.
+The full documentation is at https://django-exo-mentions.readthedocs.io.
 
 Quickstart
 ----------
 
-Install django-model-mentions::
+Install django-exo-mentions::
 
-    pip install django-model-mentions
+    pip install django-exo-mentions
 
 =====
 Usage
 =====
 
-To use django-mentions in a project, add it to your `INSTALLED_APPS`:
+To use django-exo-mentions in a project, add it to your `INSTALLED_APPS`:
 
 .. code-block:: python
 
     INSTALLED_APPS = (
         ...
-        'mentions',
+        'exo_mentions',
         ...
     )
 
 Define a signal for the callback
 
 .. code-block:: python
-    
+
     from django.dispatch import receiver
     from django.core.signals import request_finished
 
@@ -68,7 +68,7 @@ You can override the pattern if you want.
 .. code-block:: python
 
     from django.apps import AppConfig
-    from mentions.registry import register
+    from exo_mentions.registry import register
 
     class MyAppConfig(AppConfig):
         name = 'myapp'
@@ -78,7 +78,7 @@ You can override the pattern if you want.
             field = 'description'
             callback = post_detect_mention_callback
 
-            register(model, field, callback)    
+            register(model, field, callback)
 
 At this point the library will notify to the callback each time there is a mention in the field of the registered model. Thats all! :)
 
@@ -107,8 +107,9 @@ Running Tests
 
 Does the code actually work?
 
-::
+Docker, Compose, and Tox are used to approximate the environment that Travis CI, Code Climate, and Coveralls all run when you push. This will allow you to test your code against multiple versions of Python (3.4, 3.5, 3.6, 3.7) locally before pushing it or even committing it. For more information about how to get Docker, please visit `documentation
+https://docs.docker.com/install/linux/docker-ce/ubuntu/`_.
 
-    source <YOURVIRTUALENV>/bin/activate
-    (myenv) $ pip install tox
-    (myenv) $ tox
+To run everything (this will take a while the first time you run it, but subsequent runs will be quick):
+
+$ docker build -t django-exo-mentions/tox:latest .

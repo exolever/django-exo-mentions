@@ -11,7 +11,7 @@ except ImportError:
 
 
 def get_version(*file_paths):
-    """Retrieves the version from mentions/__init__.py"""
+    """Retrieves the version from exo_mentions/__init__.py"""
     filename = os.path.join(os.path.dirname(__file__), *file_paths)
     version_file = open(filename).read()
     version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
@@ -21,7 +21,7 @@ def get_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-version = get_version("mentions", "__init__.py")
+version = get_version("exo_mentions", "__init__.py")
 
 
 if sys.argv[-1] == 'publish':
@@ -45,21 +45,23 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='django-model-mentions',
+    name='django-exo-mentions',
     version=version,
-    description="""Hello Project""",
+    description="""Add mention feature to your django application.""",
     long_description=readme + '\n\n' + history,
-    author='Jose M. Marfil',
-    author_email='josemarfyl@gmail.com',
-    url='https://github.com/marfyl/django-mentions',
+    author='Jose M. Marfil, Tomás Garzón, Javier Sújar',
+    author_email='josemarfyl@gmail.com, tomasgarzonhervas@gmail.com, javier.sujar@gmail.com',
+    url='https://github.com/exolever/django-exo-mentions',
     packages=[
-        'mentions',
+        'exo_mentions',
     ],
     include_package_data=True,
-    install_requires=[],
+    install_requires=[
+        'djangorestframework==3.6.3',
+    ],
     license="MIT",
     zip_safe=False,
-    keywords='django-model-mentions',
+    keywords='django-exo-mentions',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django :: 1.11',
