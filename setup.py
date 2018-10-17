@@ -5,7 +5,7 @@ import re
 import sys
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
@@ -19,7 +19,6 @@ def get_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError('Unable to find version string.')
-
 
 version = get_version("exo_mentions", "__init__.py")
 
@@ -44,6 +43,8 @@ if sys.argv[-1] == 'tag':
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
+EXCLUDE_FROM_PACKAGES = ['tests*', ]
+
 setup(
     name='django-exo-mentions',
     version=version,
@@ -52,9 +53,7 @@ setup(
     author='Jose M. Marfil, Tomás Garzón, Javier Sújar',
     author_email='josemarfyl@gmail.com, tomasgarzonhervas@gmail.com, javier.sujar@gmail.com',
     url='https://github.com/exolever/django-exo-mentions',
-    packages=[
-        'exo_mentions',
-    ],
+    packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES),
     include_package_data=True,
     install_requires=[
         'djangorestframework==3.6.3',
