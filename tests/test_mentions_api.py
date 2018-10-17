@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-test_django-mentions
+test_django-exo-mentions
 ------------
 
-Tests for `django-mentions` models module.
+Tests for `django-exo-mentions` models module.
 """
 
 from django.contrib.auth import get_user_model

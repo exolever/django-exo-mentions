@@ -18,7 +18,7 @@ class SearchMentionAPIView(GenericAPIView):
         output_serializer = getattr(
             settings,
             'DJANGO_MENTION_RESULTS_SERIALIZER',
-            'mentions.api.serializers'
+            'exo_mentions.api.serializers'
         )
         return __import__(
             output_serializer,

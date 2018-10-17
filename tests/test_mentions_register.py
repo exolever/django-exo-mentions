@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-test_django-mentions
+test_django-exo-mentions
 ------------
 
-Tests for `django-mentions` models module.
+Tests for `django-exo-mentions` models module.
 """
 
 from django.test import TestCase
@@ -13,10 +13,10 @@ from django.apps import apps
 from django.db.models.signals import post_save, pre_save
 
 
-from mentions.exceptions import DjangoMentionException
-from mentions.mixins.mentions_test_mixins import DjangoMentionTestMixins
-from mentions.registry import register, unregister
-from mentions.signals.save_signals import (
+from exo_mentions.exceptions import DjangoMentionException
+from exo_mentions.mixins.mentions_test_mixins import DjangoMentionTestMixins
+from exo_mentions.registry import register, unregister
+from exo_mentions.signals.save_signals import (
     post_save_model_detect_mentions,
     pre_save_model_detect_mentions,
 )

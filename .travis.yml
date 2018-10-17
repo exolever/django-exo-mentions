@@ -6,6 +6,6 @@ services:
 
 # command to run tests using coverage, e.g. python setup.py test
 script:
-  docker build -t django-mentions .
+  docker build -t django-exo-mentions .
 after_success:
   - codecov -e TOX_ENV

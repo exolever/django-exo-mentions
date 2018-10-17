@@ -6,6 +6,8 @@ Development Lead
 ----------------
 
 * Jose M. Marfil <josemarfyl@gmail.com>
+* Tomás Garzón <tomasgarzonhervas@gmail.com>
+* Javier Sújar <javier.sujar@gmail.com>
 
 Contributors
 ------------

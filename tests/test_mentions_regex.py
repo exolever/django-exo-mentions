@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from mentions.registry import DEFAULT_PATTERN
-from mentions.wrapper import MentionsWrapper
+from exo_mentions.registry import DEFAULT_PATTERN
+from exo_mentions.wrapper import MentionsWrapper
 
 
 class TestMentionsRegex(TestCase):

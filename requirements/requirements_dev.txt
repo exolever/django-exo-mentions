@@ -7,3 +7,5 @@ django-rainbowtests
 django_extensions
 
 model_mommy
+
+bumpversion==0.5.3

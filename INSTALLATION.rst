@@ -4,4 +4,4 @@ Installation
 
 At the command line::
 
-    $ pip install django-model-mentions
+    $ pip install django-exo-mentions

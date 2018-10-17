@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'model_mommy',
     'tests',
     # Main app
-    'mentions',
+    'exo_mentions',
 ]
 
 SITE_ID = 1

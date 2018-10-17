@@ -2,13 +2,13 @@
 Usage
 =====
 
-To use django-mentions in a project, add it to your `INSTALLED_APPS`:
+To use django-exo-mentions in a project, add it to your `INSTALLED_APPS`:
 
 .. code-block:: python
 
     INSTALLED_APPS = (
         ...
-        'mentions',
+        'exo_mentions',
         ...
     )
 
@@ -17,7 +17,7 @@ Add this url to your api urls:
 .. code-block:: python
     urlpatterns = [
         ...
-        url(r'^mentions', include('mentions.api.urls', namespace='mentions')),
+        url(r'^mentions', include('exo_mentions.api.urls', namespace='mentions')),
         ...
     ]
 
@@ -48,7 +48,7 @@ You can override the pattern if you want.
 .. code-block:: python
 
     from django.apps import AppConfig
-    from mentions.registry import register
+    from exo_mentions.registry import register
 
     class MyAppConfig(AppConfig):
         name = 'myapp'

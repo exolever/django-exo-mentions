@@ -52,8 +52,8 @@ class MentionsWrapper:
         deleted_mentions = {}
         new_mentions = {}
         for key in list(original_mentions.keys()) + list(mentions.keys()):
-            deleted_mentions = set(original_mentions.get(key)) - set(mentions.get(key))  # noqa
-            new_mentions[key] = set(mentions.get(key)) - set(original_mentions.get(key))
+            deleted_mentions = set(original_mentions.get(key, [])) - set(mentions.get(key, []))  # noqa
+            new_mentions[key] = set(mentions.get(key, [])) - set(original_mentions.get(key, []))
 
         for mention_type in new_mentions.keys():
             for mention_pk in new_mentions.get(mention_type):
