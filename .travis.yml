@@ -1,11 +1,11 @@
 # Config file for automatic testing at travis-ci.org
+sudo: required
 
-matrix:
-  fast_finish: true
-install: 
-  pip install tox-travis
+services:
+  - docker
+
 # command to run tests using coverage, e.g. python setup.py test
-script: tox -e $TOX_ENV
+script:
   docker build -t django-mentions .
 after_success:
   - codecov -e TOX_ENV
