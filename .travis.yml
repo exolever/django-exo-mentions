@@ -2,7 +2,8 @@
 
 matrix:
   fast_finish: true
-
+install: 
+  pip install tox-travis
 # command to run tests using coverage, e.g. python setup.py test
 script: tox -e $TOX_ENV
   docker build -t django-mentions .
