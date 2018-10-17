@@ -1,0 +1,30 @@
+-r requirements.txt
+
+tox>=1.7.0
+tox-docker
+
+bumpversion==0.5.3
+wheel==0.30.0
+
+coverage==4.4.1
+mock>=1.0.1
+codecov>=2.0.0
+
+# Additional test requirements go here
+
+ipdb
+factory-boy
+Faker
+requests_mock
+model_mommy
+
+# Code linterns
+flake8
+flake8-print
+flake8-todo
+flake8-debugger
+flake8-quotes
+pylint
+pylint-django
+autopep8
+pycodestyle==2.3.1

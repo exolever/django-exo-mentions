@@ -1,0 +1,15 @@
+*.sublime*
+.git*
+.gitignore
+.DS_Store
+.pre-commit.confi.yaml
+.travis.yml
+.docker
+.editorconfig
+.tox
+.local_test.sh
+
+*.egg-info
+Makefile
+LICENSE
+docs

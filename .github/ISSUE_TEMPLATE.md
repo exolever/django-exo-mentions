@@ -1,4 +1,5 @@
-* django-model-mentions version:
+
+* django-exo-mentions version:
 * Django version:
 * Python version:
 * Operating System:
