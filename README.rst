@@ -19,7 +19,7 @@ The purpose of this package is to handle in some way mentions to users in a text
 
 The package will notify to callback function each time there is a mention in this field of the model. Then you can act accordingly on your application requisites.
 
-The full documentation is at https://django-exo-mentions.readthedocs.io.
+The full documentation is at https://exo-mentions.readthedocs.io.
 
 Quickstart
 ----------
