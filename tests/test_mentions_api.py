@@ -16,6 +16,11 @@ from model_mommy import mommy
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from exo_mentions.registry import register
+
+from .models import ModelWithCustomDescriptor
+from .signals import post_detect_mention_test_callback
+
 
 fake = Faker()
 
@@ -38,9 +43,25 @@ class TestAPIMentions(APITestCase):
         # PREPARE DATA
         [mommy.make(get_user_model(), email=fake.email(), first_name=fake.name())
          for _ in range(5)]
+
+        register(
+            model=ModelWithCustomDescriptor,
+            field='text',
+            mentionables_entities={
+                get_user_model(): {
+                    'callback': post_detect_mention_test_callback,
+                    'search_field': 'first_name',
+                }
+            }
+        )
         url = reverse('api:mentions:search')
         last_user = get_user_model().objects.last()
-        post_data = {'search': last_user.first_name}
+        mention_object = mommy.make(ModelWithCustomDescriptor)
+        post_data = {
+            'search': last_user.first_name,
+            'object_type': mention_object.__class__.__name__,
+            'object_pk': mention_object.pk,
+        }
 
         # DO ACTIONS
         response = self.client.post(url, data=post_data, format='json')
@@ -50,14 +71,58 @@ class TestAPIMentions(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0].get('name'), last_user.first_name)
 
-    def test_search_user_api_raise_error(self):
+    def test_search_user_api_incorrect_data_raise_error(self):
         # PREPARE DATA
         [mommy.make(get_user_model(), email=fake.email(), first_name=fake.name())
          for _ in range(5)]
+
+        mention_object = mommy.make(ModelWithCustomDescriptor)
+        register(
+            model=ModelWithCustomDescriptor,
+            field='text',
+            mentionables_entities={
+                get_user_model(): {
+                    'callback': post_detect_mention_test_callback,
+                }
+            }
+        )
         url = reverse('api:mentions:search')
 
-        # DO ACTIONS
-        response = self.client.post(url, data={}, format='json')
+        test_cases = [
+            {
+                'data': {},
+                'test_result': '',
+            },
+            {
+                'data': {
+                    'search': fake.word(),
+                },
+            },
+            {
+                'data': {
+                    'search': fake.word(),
+                    'object_type': fake.word(),
+                },
+            },
+            {
+                'data': {
+                    'search': fake.word(),
+                    'object_type': fake.word(),
+                    'object_pk': fake.numerify(),
+                },
+            },
+            {
+                'data': {
+                    'search': fake.word(),
+                    'object_type': mention_object.__class__.__name__,
+                    'object_pk': fake.numerify(),
+                },
+            },
+        ]
 
-        # ASSERTS
-        self.assertTrue(status.is_client_error(response.status_code))
+        # DO ACTIONS
+        for test_case in test_cases:
+            response = self.client.post(url, data=test_case.get('data'), format='json')
+
+            # ASSERTS
+            self.assertTrue(status.is_client_error(response.status_code))

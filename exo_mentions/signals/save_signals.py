@@ -11,15 +11,15 @@ def _construct_wrapper(instance):
 
         mentioned_model = get_model_registered(instance.__class__)
         field = mentioned_model.get('field')
-        callback = mentioned_model.get('callback')
+        mentionables_entities = mentioned_model.get('mentionables_entities')
         pattern = mentioned_model.get('pattern')
 
         wrapper = MentionsWrapper(
-            instance=instance,
-            user_from=getattr(instance, 'created_by', None),
+            mention_context_object=instance,
+            actor=getattr(instance, 'created_by', None),
             text=getattr(instance, field),
             original_text=getattr(original_instance, field, None),
-            callback=callback,
+            mentionables_entities=mentionables_entities,
             pattern=pattern)
 
     except KeyError:

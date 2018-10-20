@@ -16,11 +16,11 @@ class TestMentionsRegex(TestCase):
         # PREPARE DATA
         wrapper = MentionsWrapper(
             **{
-                'instance': 'instance',
-                'user_from': 'user_from',
+                'mention_context_object': 'instance',
+                'actor': 'user_from',
                 'text': 'text',
                 'original_text': 'original_text',
-                'callback': 'callback',
+                'mentionables_entities': {},
                 'pattern': DEFAULT_PATTERN,
             }
         )

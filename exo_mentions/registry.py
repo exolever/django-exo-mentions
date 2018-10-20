@@ -19,7 +19,7 @@ def _get_key_from_model(model):
     return model.__name__
 
 
-def _add_to_registry(model, field, callback, pattern):
+def _add_to_registry(model, field, mentionables_entities, pattern):
     pattern = pattern or get_default_pattern()
     model_key = _get_key_from_model(model)
 
@@ -29,10 +29,21 @@ def _add_to_registry(model, field, callback, pattern):
             'Model {} already registered.'.format(model))
 
     except KeyError:
+        mentionables_entities_processed = {}
+        for mentionable_entity_model_class in mentionables_entities.keys():
+            mentionable_entity_model_key = _get_key_from_model(mentionable_entity_model_class)
+            mentionable_config = mentionables_entities.get(mentionable_entity_model_class)
+            model_callback = mentionable_config.get('callback', None)
+            model_search_field = mentionable_config.get('search_field', None)
+
+            mentionables_entities_processed[mentionable_entity_model_key] = {}
+            mentionables_entities_processed[mentionable_entity_model_key]['callback'] = model_callback
+            mentionables_entities_processed[mentionable_entity_model_key]['search_field'] = model_search_field
+
         REGISTRY[model_key] = {
             'model': model,
             'field': field,
-            'callback': callback,
+            'mentionables_entities': mentionables_entities_processed,
             'pattern': pattern,
         }
 
@@ -59,16 +70,36 @@ def _disconect_signals(model):
     post_save.disconnect(post_save_model_detect_mentions, sender=model)
 
 
-def get_model_registered_from_name(nodel_name, raise_exceptions=True):
+def get_model_registered_from_name(model_name, raise_exceptions=True):
     registered_model = None
     try:
-        registered_model = REGISTRY[nodel_name]
+        registered_model = REGISTRY[model_name]
     except KeyError:
         if raise_exceptions:
             raise DjangoMentionException(
-                'Model {} not registered'.format(nodel_name))
+                'Model {} not registered'.format(model_name))
 
     return registered_model
+
+
+def get_mentionable_objects_for_model(model_name, raise_exceptions=True):
+    mentionable_objects = {}
+    try:
+        mentionable_objects = get_model_registered_from_name(model_name).get(
+            'mentionables_entities')
+    except DjangoMentionException as e:
+        if raise_exceptions:
+            raise e
+
+    return mentionable_objects
+
+
+def get_model_class_registered_from_name(model_name, raise_exceptions=True):
+    try:
+        return get_model_registered_from_name(model_name).get('model')
+    except DjangoMentionException as e:
+        if raise_exceptions:
+            raise e
 
 
 def get_model_registered(model_class, raise_exceptions=True):
@@ -76,9 +107,19 @@ def get_model_registered(model_class, raise_exceptions=True):
     return get_model_registered_from_name(model_key, raise_exceptions)
 
 
-def register(model, field, callback, pattern=None, raise_exceptions=False):
+def register(model, field, mentionables_entities, pattern=None, raise_exceptions=False):
+    """
+        mentions = [
+            {
+                model_class: {
+                    'callback': method_call_back_user,
+                    'search_field': 'first_name'
+                },
+            },
+        ]
+    """
     try:
-        _add_to_registry(model, field, callback, pattern)
+        _add_to_registry(model, field, mentionables_entities, pattern)
         _connect_signals(model)
     except DjangoMentionException as e:
         if raise_exceptions:

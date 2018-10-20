@@ -8,9 +8,10 @@ test_django-exo-mentions
 Tests for `django-exo-mentions` models module.
 """
 
-from django.test import TestCase
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save, pre_save
+from django.test import TestCase
 
 
 from exo_mentions.exceptions import DjangoMentionException
@@ -34,7 +35,15 @@ class TestMentionsRegister(DjangoMentionTestMixins, TestCase):
         )
 
         # DO ACTION
-        register(ModelWithCustomDescriptor, 'text', post_detect_mention_test_callback)
+        register(
+            model=ModelWithCustomDescriptor,
+            field='text',
+            mentionables_entities={
+                get_user_model(): {
+                    'callback': post_detect_mention_test_callback,
+                }
+            }
+        )
 
         # ASSERTS
         self.assertTrue(post_save_model_detect_mentions in [_[1]() for _ in post_save.receivers])
@@ -62,15 +71,28 @@ class TestMentionsRegister(DjangoMentionTestMixins, TestCase):
         )
 
         # PREPARE DATA
-        register(ModelWithCustomDescriptor, 'text', post_detect_mention_test_callback)
+        register(
+            model=ModelWithCustomDescriptor,
+            field='text',
+            mentionables_entities={
+                get_user_model(): {
+                    'callback': post_detect_mention_test_callback,
+                }
+            }
+        )
 
         # ASSERTS
         with self.assertRaises(DjangoMentionException):
             register(
                 model=ModelWithCustomDescriptor,
                 field='text',
-                callback=post_detect_mention_test_callback,
-                raise_exceptions=True)
+                mentionables_entities={
+                    get_user_model(): {
+                        'callback': post_detect_mention_test_callback,
+                    }
+                },
+                raise_exceptions=True,
+            )
 
     def test_unregister_not_registered_model_raise_an_exception(self):
         # PREPARE DATA

@@ -32,12 +32,21 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
         register(
             ModelWithCustomDescriptor,
             'text',
-            post_detect_mention_test_callback,
+            mentionables_entities={
+                get_user_model(): {
+                    'callback': post_detect_mention_test_callback,
+                }
+            }
         )
 
     @patch('exo_mentions.wrapper.MentionsWrapper.do_mention')
     def test_model_registration_with_multiple_mentions(self, do_mentions_patch):
         # PREPARE DATA
+        object_owner = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         user_mentioned_1 = mommy.make(
             get_user_model(),
             email=fake.email(),
@@ -62,7 +71,10 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
         )
 
         # DO ACTION
-        self.instance = ModelWithCustomDescriptor.objects.create(text=description)
+        self.instance = ModelWithCustomDescriptor.objects.create(
+            text=description,
+            created_by=object_owner,
+        )
 
         # ASSERTS
         self.assertTrue(do_mentions_patch.called)
@@ -71,6 +83,11 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
     @patch('exo_mentions.wrapper.MentionsWrapper.do_mention')
     def test_model_registration_with_no_mentions(self, do_mentions_patch):
         # PREPARE DATA
+        object_owner = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         user_mentioned = mommy.make(
             get_user_model(),
             email=fake.email(),
@@ -80,7 +97,10 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
             user_mentioned.pk, user_mentioned.pk, user_mentioned.first_name)
 
         # DO ACTION
-        ModelWithCustomDescriptor.objects.create(text=description)
+        ModelWithCustomDescriptor.objects.create(
+            text=description,
+            created_by=object_owner,
+        )
 
         # ASSERTS
         self.assertFalse(do_mentions_patch.called)
@@ -88,8 +108,12 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
     @patch('exo_mentions.wrapper.MentionsWrapper.do_mention')
     def test_user_mentioned_multiple_times_send_one_mention_signal(
             self, do_mentions_patch):
-
         # PREPARE DATA
+        object_owner = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         user = mommy.make(
             get_user_model(),
             email=fake.email(),
@@ -109,7 +133,10 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
         )
 
         # DO ACTION
-        ModelWithCustomDescriptor.objects.create(text=description)
+        ModelWithCustomDescriptor.objects.create(
+            text=description,
+            created_by=object_owner,
+        )
 
         # ASSERTS
         self.assertTrue(do_mentions_patch.called)
@@ -117,6 +144,11 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
 
     def test_update_mentions_at_object(self):
         # PREPARE DATA
+        object_owner = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         user_1, user_2, user_3 = [mommy.make(
             get_user_model(),
             email=fake.email(),
@@ -136,7 +168,9 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
         )
 
         mention_object = ModelWithCustomDescriptor.objects.create(
-            text=description)
+            text=description,
+            created_by=object_owner,
+        )
 
         # DO ACTION
         with patch('exo_mentions.wrapper.MentionsWrapper.do_mention') as do_mentions_patch:  # noqa
@@ -157,14 +191,21 @@ class TestDjangoMentionSignals(DjangoMentionTestMixins, TestCase):
             _call, mock_call_params = do_mentions_patch.call_args_list[0]
             self.assertEqual(do_mentions_patch.call_count, 1)
             self.assertEqual(len(do_mentions_patch.call_args_list), 1)
-            self.assertEqual(mock_call_params.get('target'), mention_object)
-            self.assertEqual(mock_call_params.get('object_pk'), user_3.pk)
+            self.assertEqual(mock_call_params.get('mentionable_entity_type'), user_3.__class__.__name__)
+            self.assertEqual(mock_call_params.get('mentionable_entity_pk'), user_3.pk)
 
     def test_update_mentions_with_no_previews_mention_at_object(self):
         # PREPARE DATA
+        object_owner = mommy.make(
+            get_user_model(),
+            email=fake.email(),
+            first_name=fake.name(),
+        )
         description = '<p>{}</p>'.format(fake.text())
         mention_object = ModelWithCustomDescriptor.objects.create(
-            text=description)
+            text=description,
+            created_by=object_owner,
+        )
         user_1, user_2 = [mommy.make(
             get_user_model(),
             email=fake.email(),

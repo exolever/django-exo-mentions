@@ -1,21 +1,40 @@
 import re
 
 
+from .exceptions import DjangoMentionException
+
+
 class MentionsWrapper:
-    instance = None
-    user_from = None
+    mention_context_object = None
+    actor = None
     text = None
     original_text = None
-    callback = None
+    mentionables_entities = {}
+    # callback = None
     pattern = None
 
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs.pop('instance')
-        self.user_from = kwargs.pop('user_from')
+        self.mention_context_object = kwargs.pop('mention_context_object')
+        self.actor = kwargs.pop('actor')
         self.text = kwargs.pop('text')
         self.original_text = kwargs.pop('original_text')
-        self.callback = kwargs.pop('callback')
+        self.mentionables_entities = kwargs.pop('mentionables_entities')
         self.pattern = kwargs.pop('pattern')
+
+    def _get_callback(self, model, raise_exceptions=True):
+        callback = None
+        try:
+            mentionable_model = self.mentionables_entities.get(model)
+            mentionable_model.get('callback')
+        except KeyError:
+            if raise_exceptions:
+                raise DjangoMentionException(
+                    'Model {} is not mentionable inside {} context'.format(
+                        self.model,
+                        self.mention_context_object,
+                    ))
+
+        return callback
 
     def get_mentions(self, text):
         """
@@ -33,17 +52,14 @@ class MentionsWrapper:
 
             mentions[mention_type].append(mention_uuid)
 
-        return mentions
+        return {
+            mentionable_entity_type: set(mentions.get(mentionable_entity_type))
+            for mentionable_entity_type in mentions.keys()
+        }
 
     def detect_mentions(self):
         mentions = self.get_mentions(self.text)
-
-        for mention_type in mentions.keys():
-            for mention_pk in set(mentions.get(mention_type)):
-                self.do_mention(
-                    user_from=self.user_from,
-                    object_pk=int(mention_pk),
-                    target=self.instance)
+        self.execute_mentions(mentions)
 
     def update_mentions(self):
         original_mentions = self.get_mentions(self.original_text)
@@ -51,20 +67,33 @@ class MentionsWrapper:
 
         deleted_mentions = {}
         new_mentions = {}
-        for key in list(original_mentions.keys()) + list(mentions.keys()):
+        for key in set(list(original_mentions.keys()) + list(mentions.keys())):
             deleted_mentions = set(original_mentions.get(key, [])) - set(mentions.get(key, []))  # noqa
             new_mentions[key] = set(mentions.get(key, [])) - set(original_mentions.get(key, []))
 
-        for mention_type in new_mentions.keys():
-            for mention_pk in new_mentions.get(mention_type):
-                self.do_mention(
-                    user_from=self.user_from,
-                    object_pk=int(mention_pk),
-                    target=self.instance)
+        self.execute_mentions(new_mentions)
 
-    def do_mention(self, user_from, object_pk, target=None):
-        self.callback(
-            sender=self.instance.__class__,
-            user_from=user_from,
-            object_pk=object_pk,
-            target=target)
+    def execute_mentions(self, mentions_dict):
+        for mentionable_entity_type in mentions_dict.keys():
+            for mentionable_entity_pk in mentions_dict.get(mentionable_entity_type):
+                self.do_mention(
+                    mentionable_entity_type=mentionable_entity_type,
+                    mentionable_entity_pk=int(mentionable_entity_pk),
+                )
+
+    def do_mention(self, mentionable_entity_type, mentionable_entity_pk):
+        callback = self._get_callback(mentionable_entity_type)
+        if callback:
+            callback(
+                sender=self.mention_context_object.__class__,
+                user_from=self.actor,
+                object_pk=mentionable_entity_pk,
+                target=self.mention_context_object,
+            )
+
+    # def do_mention(self, actor, object_pk, target=None):
+    #     self.callback(
+    #         sender=self.instance.__class__,
+    #         user_from=actor,
+    #         object_pk=object_pk,
+    #         target=target)
