@@ -36,11 +36,11 @@ class TestAPIMentions(APITestCase):
 
     def test_search_user_api_find_matchs(self):
         # PREPARE DATA
-        [mommy.make(get_user_model(), email=fake.email(), first_name=fake.name())
+        [mommy.make(get_user_model(), email=fake.email(), full_name=fake.name())
          for _ in range(5)]
         url = reverse('api:mentions:search')
         last_user = get_user_model().objects.last()
-        post_data = {'search': last_user.first_name}
+        post_data = {'search': last_user.full_name}
 
         # DO ACTIONS
         response = self.client.post(url, data=post_data, format='json')
@@ -48,7 +48,7 @@ class TestAPIMentions(APITestCase):
         # ASSERTS
         self.assertTrue(status.is_success(response.status_code))
         self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0].get('name'), last_user.first_name)
+        self.assertEqual(response.data[0].get('name'), last_user.full_name)
 
     def test_search_user_api_raise_error(self):
         # PREPARE DATA
