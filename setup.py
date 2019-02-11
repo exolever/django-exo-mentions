@@ -47,7 +47,7 @@ EXCLUDE_FROM_PACKAGES = ['tests*', ]
 
 setup(
     name='django-exo-mentions',
-    version=version,
+    version='1.0.0',
     description="""Add mention feature to your django application.""",
     long_description=readme + '\n\n' + history,
     author='Jose M. Marfil, Tomás Garzón, Javier Sújar',
