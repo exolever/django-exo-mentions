@@ -5,11 +5,18 @@ django-exo-mentions
 .. image:: https://badge.fury.io/py/django-exo-mentions.svg
     :target: https://badge.fury.io/py/django-exo-mentions
 
+.. image:: https://requires.io/github/exolever/django-exo-mentions/requirements.svg?branch=master
+     :target: https://requires.io/github/exolever/django-exo-mentions/requirements/?branch=master
+     :alt: Requirements Status
+
 .. image:: https://travis-ci.org/exolever/django-exo-mentions.svg?branch=master
     :target: https://travis-ci.org/exolever/django-exo-mentions
 
 .. image:: https://codecov.io/gh/exolever/django-exo-mentions/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/exolever/django-exo-mentions
+
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=exolever_django-exo-mentions&metric=alert_status
+   :target: https://sonarcloud.io/dashboard?id=exolever_django-exo-mentions
 
 
 Documentation
