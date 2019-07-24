@@ -1,11 +1,26 @@
-# Config file for automatic testing at travis-ci.org
-sudo: required
-
-services:
-  - docker
-
-# command to run tests using coverage, e.g. python setup.py test
+sudo: false
+language: python
+cache: pip
+python: 3.6
+matrix:
+  fast_finish: true
+addons:
+  sonarcloud:
+    organization: openexo
+install: pip install -r requirements_test.txt
 script:
-  docker build -t django-exo-mentions .
+- tox
+- sonar-scanner
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  twine_version: 1.13.0
+  user: tomasgarzon
+  password:
+    secure: GzpbNxwUOIlhdC8mGevE4ZTbi7/cXeVfnKldPjaVnoQ6H7zHc5t6h45QT0yWr7islVZVZ8T8nnzmCG1mWPyO9O4tTzyIf0sdz1Dy40Ixdm0YjHvFRuI4FjfUb1RFeILJ3f4pSQwB1LEyEV1HNX0zLb9txxwrajC7QaRGqjmjBm8Q/KDxtxhBD775cZ1SraTfPSdJfA7uCuL5ZZEL3sIuvAjJqC6UYQZP6+sqOjHLeBqrugvzSJMH/b2oL0Qtjb5+LrLMJ0cZTeuXbwrDbiQ6doRTxvHZwOcQrWXoVuPnDuz39RtKHzecOzqfmvKj4qAvhd6hT4OsXsL1hJdu4TReO8k/3Dk8CK5aVv31W76QJ5wNLf5MLajujcElkcTvVkjHC+PAvbo3P1WqRyh8bsFT9/MJ8LlmKUcy2u+NtDQ0nqQ/aWuM5jkyflgjwFmdX4j6Z7s0y7SS8gtfQYAIy5THhY6iLSqxXRoozXRv2D0AtXdidGClYq8CI5DOhR/x/Yv05/x+rg5a/Zzy0SOpOJBqZ0e8gdb9shvrL25Er8CxVcpcMgP1AaRraZENeXaMp6R5CuQTECNxyTGYkvgTx25B857CdXYLmi2EuB12rvqLWe+7J2mvIIHZLH+/QHccjXW16p4I8/Zkuri50k56SRDmCId1Kq5qd8NHQdTlAVxFVB0=
+  on:
+    tags: true
+    repo: exolever/django-exo-mentions
+    python: 3.6
 after_success:
-  - codecov -e TOX_ENV
+- codecov
