@@ -3,3 +3,4 @@ wheel==0.30.0
 django-model-utils>=2.0
 python-dateutil
 model_mommy
+Faker
