@@ -36,10 +36,9 @@ SITE_ID = 1
 _MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
 )
 
 if django.VERSION >= (1, 10):
     MIDDLEWARE = _MIDDLEWARE_CLASSES
 else:
-    MIDDLEWARE_CLASSES = _MIDDLEWARE_CLASSES
+    MIDDLEWARE_CLASSES = _MIDDLEWARE_CLASSES + ('django.contrib.auth.middleware.SessionAuthenticationMiddleware',)
