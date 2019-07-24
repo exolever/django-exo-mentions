@@ -56,7 +56,7 @@ setup(
     packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES),
     include_package_data=True,
     install_requires=[
-        'djangorestframework==3.6.3',
+        'djangorestframework>=3.9.1',
     ],
     license="MIT",
     zip_safe=False,
