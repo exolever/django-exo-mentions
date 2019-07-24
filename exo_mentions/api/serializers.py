@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class SearchMentionSerializer(serializers.Serializer):
 
-    search = serializers.CharField(required=False, allow_blank=True)
+    search = serializers.CharField(allow_blank=True)
     type_object = serializers.CharField(required=False)
 
 
