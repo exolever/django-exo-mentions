@@ -49,7 +49,7 @@ setup(
     name='django-exo-mentions',
     version=version,
     description="""Add mention feature to your django application.""",
-    long_description=readme + '\n\n' + history,
+    long_description="""Add mention feature to your django application.""",
     author='Jose M. Marfil, Tomás Garzón, Javier Sújar',
     author_email='josemarfyl@gmail.com, tomasgarzonhervas@gmail.com, javier.sujar@gmail.com',
     url='https://github.com/exolever/django-exo-mentions',
