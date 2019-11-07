@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Jose M. Marfil <josemarfyl@gmail.com>
+* marfyl <github.com/marfyl>
 * Tomás Garzón <tomasgarzonhervas@gmail.com>
 * Javier Sújar <javier.sujar@gmail.com>
 
