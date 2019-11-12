@@ -1,2 +1,5 @@
-django-model-utils>=2.0
-djangorestframework>=3.9.1
+--index-url https://pypi.python.org/simple/
+--process-dependency-links
+
+# This param indicates to check dependencies at setup.py
+-e .
