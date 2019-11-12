@@ -21,9 +21,6 @@ django-exo-mentions
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
    :target: https://opensource.org/licenses/MIT
 
-.. image:: https://sonarcloud.io/api/project_badges/measure?project=exolever_django-exo-mentions&metric=alert_status
-   :target: https://sonarcloud.io/dashboard?id=exolever_django-exo-mentions
-
 
 Documentation
 -------------
