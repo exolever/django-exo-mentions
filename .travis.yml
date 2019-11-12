@@ -12,5 +12,16 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - tox
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  twine_version: 1.13.0
+  user: tomasgarzon
+  password:
+    secure: Pj8FvdzQLRB0IyDMtqc0gT47gdliYHkCWVS1JJnPcSNYu16cG+13/l5iUzIqxcm7lJSTWL2JTrvONarw0jSoELAypEdR+RT8HXBDChxCGye5Pz8IKv1HBbA/+pzJ+3iZuP+3bq6PPz/EVhgI5RD1GAhg2M+vcNQ/8heMGH1dJFDkGF4XCJRQpKbojlcgozHVUxmqG8bO95zqrmoz7ajv8X15sgVa5q6kloKzZJwmdxzvaYlBQ1OSp3q5BPeXMFnaBBJ219Lxzw0LZwsnGNAQA7msbprb+jP/xt8p9Bj9/2J2uHjioerX6jO15ZBf8VmMyy8Mtk8BJq+YtYbhx/rCNL/DMeGYjfo3ifKmVYlC2kmjcs9r44HF8I7Gu8GHk55A0T+Oqk8UsYlFeNOTlZefw12PrjQkSm/XDVRJGipgk4HM9JisdhWLJKMGn/5RJj36SMK62hgMWwWPTSMlN6hKzKtrTaDPiqg9/aud2vTHiA0eQ32o/7cPeuC7D9tZK+Le809HOwiCFED8Jw5n6juJxPbyKEt2xt2LQgxq3g6/gYrmLqp7aAa2yB38Fuefa+cFkTOnX3xH+Li+VkfdesKh3iXcpFPsw2wj08lnvY7a5X3KR3dbXlJNitrlkOM8UQEwVw7MmakLFOf/AR6ADn9esWutxOEwM33g2ynvuuZc2PQ=
+  on:
+    tags: true
+    repo: exolever/django-exo-mentions
+    python: 3.7
 after_success:
   - codecov

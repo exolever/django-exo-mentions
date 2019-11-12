@@ -5,6 +5,10 @@ django-exo-mentions
 .. image:: https://badge.fury.io/py/django-exo-mentions.svg
     :target: https://badge.fury.io/py/django-exo-mentions
 
+.. image:: https://requires.io/github/exolever/django-exo-mentions/requirements.svg?branch=master
+     :target: https://requires.io/github/exolever/django-exo-mentions/requirements/?branch=master
+     :alt: Requirements Status
+
 .. image:: https://travis-ci.org/exolever/django-exo-mentions.svg?branch=master
     :target: https://travis-ci.org/exolever/django-exo-mentions
 
@@ -16,6 +20,9 @@ django-exo-mentions
     
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
    :target: https://opensource.org/licenses/MIT
+
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=exolever_django-exo-mentions&metric=alert_status
+   :target: https://sonarcloud.io/dashboard?id=exolever_django-exo-mentions
 
 
 Documentation
@@ -104,7 +111,6 @@ At this point the library will notify to the callback each time there is a menti
         Callback function to notify when there are mentions
     pattern : regular expression
         The pattern to codify the mentions (default r'class="mention" data-user=[\'"]?([^\'" >]+)')
-
     """
 
 
@@ -113,9 +119,19 @@ Running Tests
 
 Does the code actually work?
 
-Docker, Compose, and Tox are used to approximate the environment that Travis CI, Code Climate, and Coveralls all run when you push. This will allow you to test your code against multiple versions of Python (3.4, 3.5, 3.6, 3.7) locally before pushing it or even committing it. For more information about how to get Docker, please visit `documentation
-https://docs.docker.com/install/linux/docker-ce/ubuntu/`_.
+::
 
-To run everything (this will take a while the first time you run it, but subsequent runs will be quick):
+    source <YOURVIRTUALENV>/bin/activate
+    (myenv) $ pip install tox
+    (myenv) $ tox
 
-$ docker build -t django-exo-mentions/tox:latest .
+Credits
+-------
+
+Tools used in rendering this package:
+
+*  Cookiecutter_
+*  `cookiecutter-djangopackage`_
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`cookiecutter-djangopackage`: https://github.com/pydanny/cookiecutter-djangopackage
