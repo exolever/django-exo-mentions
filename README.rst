@@ -10,6 +10,12 @@ django-exo-mentions
 
 .. image:: https://codecov.io/gh/exolever/django-exo-mentions/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/exolever/django-exo-mentions
+  
+.. image:: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
+   :target: https://github.com/exolever/django-exo-mentions/issues
+    
+.. image:: https://img.shields.io/badge/License-MIT-green.svg
+   :target: https://opensource.org/licenses/MIT
 
 
 Documentation

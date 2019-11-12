@@ -25,14 +25,10 @@ class TestAPIMentions(APITestCase):
     def setUp(self):
         user_email = fake.email()
         user_pass = fake.word()
-        self.user = mommy.make(
-            get_user_model(),
-            email=user_email)
+        self.user = mommy.make(get_user_model(), email=user_email)
         self.user.set_password(user_pass)
         self.user.save()
-        self.client.login(
-            username=self.user.username,
-            password=user_pass)
+        self.client.login(username=self.user.username, password=user_pass)
 
     def test_search_user_api_find_matchs(self):
         # PREPARE DATA
@@ -54,10 +50,11 @@ class TestAPIMentions(APITestCase):
         # PREPARE DATA
         [mommy.make(get_user_model(), email=fake.email(), first_name=fake.name())
          for _ in range(5)]
+        post_data = {'search': ''}
         url = reverse('api:mentions:search')
 
         # DO ACTIONS
-        response = self.client.post(url, data={}, format='json')
+        response = self.client.post(url, data=post_data, format='json')
 
         # ASSERTS
         self.assertTrue(status.is_client_error(response.status_code))

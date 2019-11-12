@@ -1,11 +1,16 @@
-# Config file for automatic testing at travis-ci.org
-sudo: required
-
+sudo: false
+dist: xenial
+language: python
+python: 3.7
+matrix:
+  fast_finish: true
 services:
-  - docker
-
-# command to run tests using coverage, e.g. python setup.py test
+  - postgresql
+install:
+  - pip install -r requirements_test.txt
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
-  docker build -t django-exo-mentions .
+  - tox
 after_success:
-  - codecov -e TOX_ENV
+  - codecov
